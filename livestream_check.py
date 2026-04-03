@@ -25,16 +25,19 @@ def validate_stream(youtube_url: str):
     try:
         stream = get_stream(youtube_url)
         last_frame_hash = get_frame_hash(get_current_frame(stream))
+        differences = []
         for i in range(0, 4):
             frame_hash = get_frame_hash(get_current_frame(stream))
-        print(frame_hash - last_frame_hash)
+            differences.append(frame_hash - last_frame_hash)
+            last_frame_hash = frame_hash
+        return any(x > 5 for x in differences)
 
     except Exception as e:
         print(e)
         return False
 
 
-def get_frame_hash(frame: list):
-    image = Image.fromarray(frame)
+def get_frame_hash(frame):
+    image = Image.frombytes(mode='RGBA',size=(1024,1024),data=frame)
     return imagehash.phash(image)
 
