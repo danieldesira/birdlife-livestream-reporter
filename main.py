@@ -1,8 +1,8 @@
-from email_report import load_email_template
+from email_report import generate_email_body
 from livestream_check import generate_livestream_status_report
 
 report = generate_livestream_status_report()
+email_body = generate_email_body(report)
 
-print(report)
-
-print(load_email_template())
+print('HTML report:')
+print(email_body)

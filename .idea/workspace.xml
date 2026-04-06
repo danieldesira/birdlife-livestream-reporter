@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e065648d-bf35-475e-b9de-c7f51658ec0d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/email_report.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/email_template.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/report_stat.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/youtube_streams.json" afterDir="false" />
+    <list default="true" id="e065648d-bf35-475e-b9de-c7f51658ec0d" name="Changes" comment="modularise codebase">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/livestream_check.py" beforeDir="false" afterPath="$PROJECT_DIR$/livestream_check.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/email_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/email_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/email_template.html" beforeDir="false" afterPath="$PROJECT_DIR$/email_template.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -102,12 +98,21 @@
       <option name="project" value="LOCAL" />
       <updated>1775236470429</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="modularise codebase">
+      <option name="closed" value="true" />
+      <created>1775467264036</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1775467264036</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
     <MESSAGE value="improve stream validation: frame difference yet to be properly tested" />
-    <option name="LAST_COMMIT_MESSAGE" value="improve stream validation: frame difference yet to be properly tested" />
+    <MESSAGE value="modularise codebase" />
+    <option name="LAST_COMMIT_MESSAGE" value="modularise codebase" />
   </component>
 </project>
