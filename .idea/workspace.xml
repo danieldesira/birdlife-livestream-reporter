@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e065648d-bf35-475e-b9de-c7f51658ec0d" name="Changes" comment="initial commit">
+    <list default="true" id="e065648d-bf35-475e-b9de-c7f51658ec0d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/email_report.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/email_template.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/report_stat.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/youtube_streams.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/livestream_check.py" beforeDir="false" afterPath="$PROJECT_DIR$/livestream_check.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -17,6 +22,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Python Script" />
       </list>
     </option>
@@ -50,6 +56,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.Image.executor": "Run",
     "Python.livestream_check.executor": "Run",
@@ -87,22 +94,20 @@
       <option name="project" value="LOCAL" />
       <updated>1775165460026</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="improve stream validation: frame difference yet to be properly tested">
+      <option name="closed" value="true" />
+      <created>1775236470429</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1775236470429</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/livestream_check.py</url>
-          <line>32</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="improve stream validation: frame difference yet to be properly tested" />
+    <option name="LAST_COMMIT_MESSAGE" value="improve stream validation: frame difference yet to be properly tested" />
   </component>
 </project>

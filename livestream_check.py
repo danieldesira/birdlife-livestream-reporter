@@ -6,6 +6,9 @@ import streamlink
 from PIL import Image
 from av.stream import Stream
 
+from config import load_youtube_streams
+from report_stat import ReportStat
+
 
 def get_stream(youtube_url: str):
     sl = streamlink.Streamlink()
@@ -38,6 +41,22 @@ def validate_stream(youtube_url: str):
 
 
 def get_frame_hash(frame):
-    image = Image.frombytes(mode='RGBA',size=(1024,1024),data=frame)
+    image = Image.frombytes(mode='RGBA', size=(1024, 1024), data=frame)
     return imagehash.phash(image)
 
+
+def generate_livestream_status_report():
+    report = []
+    for stream in load_youtube_streams():
+        print('Checking', stream.get('name'))
+        try:
+            is_online = validate_stream(stream.get('url'))
+            if is_online:
+                status = 'Online'
+            else:
+                status = 'Offline'
+            report.append(ReportStat(stream.get('name'), stream.get('url'), status))
+            print('Online:', is_online)
+        except Exception as e:
+            print(e)
+    return report
