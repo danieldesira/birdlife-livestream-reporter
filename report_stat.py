@@ -1,5 +1,8 @@
+from typing import Literal
+
+
 class ReportStat:
-    def __init__(self, name: str, url: str, status: str):
+    def __init__(self, name: str, url: str, status: Literal['Online', 'Offline']):
         self.__stream_name = name
         self.__stream_url = url
         self.__status = status
