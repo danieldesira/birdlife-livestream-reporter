@@ -7,6 +7,7 @@ from PIL import Image
 from numpy import ndarray
 from streamlink.stream.hls import HLSStream
 
+from bitly_links import get_long_url
 from report_stat import ReportStat
 
 
@@ -50,13 +51,12 @@ def generate_livestream_status_report():
     for stream in load_youtube_streams():
         print('Checking', stream.get('name'))
         try:
-            is_online = validate_stream(stream.get('url'))
-            if is_online:
+            if validate_stream(get_long_url(stream.get('url'))):
                 status = 'Online'
             else:
                 status = 'Offline'
             report.append(ReportStat(stream.get('name'), stream.get('url'), status))
-            print('Online:', is_online)
+            print(status)
         except Exception as e:
             print(e)
     return report
