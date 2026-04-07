@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e065648d-bf35-475e-b9de-c7f51658ec0d" name="Changes" comment="add send_email function">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/email_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/email_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/email_template.html" beforeDir="false" afterPath="$PROJECT_DIR$/email_template.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/livestream_check.py" beforeDir="false" afterPath="$PROJECT_DIR$/livestream_check.py" afterDir="false" />
-    </list>
+    <list default="true" id="e065648d-bf35-475e-b9de-c7f51658ec0d" name="Changes" comment="Add report summary&#10;Fix method parameter type hints" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -152,7 +147,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775546834820</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Add report summary&#10;Fix method parameter type hints">
+      <option name="closed" value="true" />
+      <created>1775550111503</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1775550111503</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -161,7 +164,8 @@
     <MESSAGE value="modularise codebase" />
     <MESSAGE value="generate report content" />
     <MESSAGE value="add send_email function" />
-    <option name="LAST_COMMIT_MESSAGE" value="add send_email function" />
+    <MESSAGE value="Add report summary&#10;Fix method parameter type hints" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add report summary&#10;Fix method parameter type hints" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
