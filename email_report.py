@@ -1,7 +1,5 @@
 import os
 import smtplib
-from email.message import EmailMessage
-from email.mime.message import MIMEMessage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -16,7 +14,11 @@ def load_email_template():
 
 def generate_email_body(report_data: list):
     template = load_email_template()
-    table_markup = ''.join(map(lambda stat: f"<tr><td>{stat.name}</td><td>{stat.status}</td></tr>", report_data))
+    table_markup = ''.join(
+        map(lambda
+                stat: f"<tr><td><div class=\"rounded {stat.status.lower()}\"></div></td><td>{stat.name}</td><td>{stat.status}</td></tr>",
+            report_data)
+    )
     if any(filter(lambda stat: stat.status != 'Online', report_data)):
         total = len(report_data)
         online_count = len(list(filter(lambda stat: stat.status == 'Online', report_data)))
@@ -40,5 +42,5 @@ def send_email(report_data: list):
             server.starttls()
             server.login(os.getenv('MAIL_USERNAME'), os.getenv('MAIL_PASSWORD'))
             server.send_message(msg)
-    except smtplib.SMTPException:
-        print('Error: unable to send email')
+    except smtplib.SMTPException as e:
+        print('Error: unable to send email', e)
