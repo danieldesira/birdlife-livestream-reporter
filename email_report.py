@@ -1,5 +1,9 @@
+import os
 import smtplib
 from email.message import EmailMessage
+from email.mime.message import MIMEMessage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 def load_email_template():
@@ -26,14 +30,15 @@ def generate_email_body(report_data: list):
 
 def send_email(report_data: list):
     try:
-        msg = EmailMessage()
-        msg['From'] = 'info@birdlifemalta.org'
-        msg['To'] = 'desiradaniel2007@gmail.com'
+        msg = MIMEMultipart('alternative')
+        msg['From'] = os.getenv('MAIL_USERNAME')
+        msg['To'] = os.getenv('MAIL_RECIPIENTS')
         msg['Subject'] = 'Birdlife Youtube Livestream Report'
-        msg['Body'] = generate_email_body(report_data).replace('\n', '').replace('\r', '')
-        server = smtplib.SMTP('smtp.office365.com', 587)
-        server.starttls()
-        server.login('', '')
-        server.send_message(msg)
+        body = generate_email_body(report_data)
+        msg.attach(MIMEText(body, 'html'))
+        with smtplib.SMTP(os.getenv('MAIL_HOST'), int(os.getenv('MAIL_PORT') or '587')) as server:
+            server.starttls()
+            server.login(os.getenv('MAIL_USERNAME'), os.getenv('MAIL_PASSWORD'))
+            server.send_message(msg)
     except smtplib.SMTPException:
         print('Error: unable to send email')
