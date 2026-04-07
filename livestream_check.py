@@ -4,7 +4,8 @@ import imagehash
 import imageio
 import streamlink
 from PIL import Image
-from av.stream import Stream
+from numpy import ndarray
+from streamlink.stream.hls import HLSStream
 
 from config import load_youtube_streams
 from report_stat import ReportStat
@@ -16,7 +17,7 @@ def get_stream(youtube_url: str):
     return streams['best']
 
 
-def get_current_frame(stream: Stream):
+def get_current_frame(stream: HLSStream):
     with stream.open() as fd:
         frame_bytes = fd.read(1024 * 1024)
 
@@ -40,7 +41,7 @@ def validate_stream(youtube_url: str):
         return False
 
 
-def get_frame_hash(frame):
+def get_frame_hash(frame: ndarray):
     image = Image.frombytes(mode='RGBA', size=(1024, 1024), data=frame)
     return imagehash.phash(image)
 

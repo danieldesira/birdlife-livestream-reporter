@@ -12,8 +12,16 @@ def load_email_template():
 
 def generate_email_body(report_data: list):
     template = load_email_template()
-    tr_markup = ''.join(map(lambda stat: f"<tr><td>{stat.name}</td><td>{stat.status}</td></tr>", report_data))
-    return template.replace('<!--report-->', tr_markup)
+    table_markup = ''.join(map(lambda stat: f"<tr><td>{stat.name}</td><td>{stat.status}</td></tr>", report_data))
+    if any(filter(lambda stat: stat.status != 'Online', report_data)):
+        total = len(report_data)
+        online_count = len(list(filter(lambda stat: stat.status == 'Online', report_data)))
+        summary = f"{online_count}/{total} livestreams online..."
+    else:
+        summary = 'All livestreams online!'
+    return (template
+            .replace('<!--report-->', table_markup)
+            .replace('<!--summary-->', summary))
 
 
 def send_email(report_data: list):
