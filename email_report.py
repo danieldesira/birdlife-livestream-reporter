@@ -16,7 +16,7 @@ def generate_email_body(report_data: list):
     template = load_email_template()
     table_markup = ''.join(
         map(lambda
-                stat: f"<tr><td><div class=\"rounded {stat.status.lower()}\"></div></td><td>{stat.name}</td><td>{stat.status}</td></tr>",
+                stat: f"<tr><td><div class=\"rounded {stat.status.lower()}\"></div></td><td><a href=\"{stat.url}\">{stat.name}</a></td><td>{stat.status}</td></tr>",
             report_data)
     )
     if any(filter(lambda stat: stat.status != 'Online', report_data)):

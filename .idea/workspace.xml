@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e065648d-bf35-475e-b9de-c7f51658ec0d" name="Changes" comment="">
+    <list default="true" id="e065648d-bf35-475e-b9de-c7f51658ec0d" name="Changes" comment="add barn swallow cam">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/youtube_streams.json" beforeDir="false" afterPath="$PROJECT_DIR$/youtube_streams.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/email_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/email_report.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -190,7 +190,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775572113805</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="add barn swallow cam">
+      <option name="closed" value="true" />
+      <created>1776341896298</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1776341896298</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -204,6 +212,7 @@
     <MESSAGE value="convert status to Literal type" />
     <MESSAGE value="fix email implementation" />
     <MESSAGE value="add red/green dots to report" />
-    <option name="LAST_COMMIT_MESSAGE" value="add red/green dots to report" />
+    <MESSAGE value="add barn swallow cam" />
+    <option name="LAST_COMMIT_MESSAGE" value="add barn swallow cam" />
   </component>
 </project>
