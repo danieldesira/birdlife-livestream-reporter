@@ -45,4 +45,4 @@ USER appuser
 COPY . .
 
 # Run the application.
-CMD python -m main.py
+CMD python -m main
