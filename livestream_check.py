@@ -48,17 +48,20 @@ def get_frame_hash(frame: ndarray):
 
 def generate_livestream_status_report():
     report = []
-    for stream in load_youtube_streams():
-        print('Checking', stream.get('name'))
-        try:
-            if validate_stream(get_long_url(stream.get('url'))):
-                status = 'Online'
-            else:
-                status = 'Offline'
-            report.append(ReportStat(stream.get('name'), stream.get('url'), status))
-            print(status)
-        except Exception as e:
-            print(e)
+    streams = load_youtube_streams()
+    if streams:
+        for stream in streams:
+            print('Checking', stream.get('name'))
+            try:
+                youtube_url = get_long_url(stream.get('url')) or ''
+                if validate_stream(youtube_url):
+                    status = 'Online'
+                else:
+                    status = 'Offline'
+                report.append(ReportStat(stream.get('name'), stream.get('url'), status))
+                print(status)
+            except Exception as e:
+                print(e)
     return report
 
 
