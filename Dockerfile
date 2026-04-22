@@ -24,9 +24,8 @@ ARG UID=10001
 RUN adduser \
     --disabled-password \
     --gecos "" \
-    --home "/nonexistent" \
+    --home "/home/appuser" \
     --shell "/sbin/nologin" \
-    --no-create-home \
     --uid "${UID}" \
     appuser
 
@@ -38,6 +37,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
 
+# Create a directory for logs and set permissions so the non-privileged user can write to it.
+RUN mkdir -p /app/logs && chown -R appuser:appuser /app/logs
+
 # Switch to the non-privileged user to run the application.
 USER appuser
 
@@ -45,4 +47,4 @@ USER appuser
 COPY . .
 
 # Run the application.
-CMD python -m main
+CMD python -Xfrozen_modules=off -m main

@@ -2,7 +2,9 @@ import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import logging
 
+logger = logging.getLogger(__name__)
 
 def load_email_template():
     try:
@@ -10,6 +12,7 @@ def load_email_template():
             return file.read()
     except FileNotFoundError:
         print('email_template.html not found')
+        logger.error('email_template.html not found')
 
 
 def generate_email_body(report_data: list):
@@ -37,6 +40,7 @@ def send_email(report_data: list):
     try:
         if not os.getenv('MAIL_USERNAME') or not os.getenv('MAIL_PASSWORD') or not os.getenv('MAIL_RECIPIENTS') or not os.getenv('MAIL_HOST') or not os.getenv('MAIL_PORT'):
             print('Error: Missing email configuration')
+            logger.error('Error: Missing email configuration')
         else:
             mail_username = os.getenv('MAIL_USERNAME') or ''
             mail_password = os.getenv('MAIL_PASSWORD') or ''
@@ -54,5 +58,7 @@ def send_email(report_data: list):
                 server.starttls()
                 server.login(mail_username, mail_password)
                 server.send_message(msg)
+            logger.info('Email sent successfully')
     except smtplib.SMTPException as e:
         print('Error: unable to send email', e)
+        logger.error(f"Error sending email: {e}")

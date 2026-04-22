@@ -6,9 +6,12 @@ import streamlink
 from PIL import Image
 from numpy import ndarray
 from streamlink.stream.hls import HLSStream
+import logging
 
 from bitly_links import get_long_url
 from report_stat import ReportStat
+
+logger = logging.getLogger(__name__)
 
 
 def get_stream(youtube_url: str):
@@ -26,6 +29,7 @@ def get_current_frame(stream: HLSStream):
 
 
 def validate_stream(youtube_url: str):
+    logger.info(f"Validating stream: {youtube_url}")
     try:
         stream = get_stream(youtube_url)
         last_frame_hash = get_frame_hash(get_current_frame(stream))
@@ -38,6 +42,7 @@ def validate_stream(youtube_url: str):
 
     except Exception as e:
         print(e)
+        logger.error(f"Error validating stream {youtube_url}: {e}")
         return False
 
 
@@ -51,7 +56,8 @@ def generate_livestream_status_report():
     streams = load_youtube_streams()
     if streams:
         for stream in streams:
-            print('Checking', stream.get('name'))
+            print(f"Checking stream: {stream.get('name')}")
+            logger.info(f"Checking stream: {stream.get('name')}")
             try:
                 youtube_url = get_long_url(stream.get('url')) or ''
                 if validate_stream(youtube_url):
@@ -59,9 +65,10 @@ def generate_livestream_status_report():
                 else:
                     status = 'Offline'
                 report.append(ReportStat(stream.get('name'), stream.get('url'), status))
-                print(status)
+                print(f"Stream status: {status}")
+                logger.info(f"Stream status: {status}")
             except Exception as e:
-                print(e)
+                logger.error(f"Error checking stream {stream.get('name')}: {e}")
     return report
 
 
@@ -70,4 +77,4 @@ def load_youtube_streams():
         with open('youtube_streams.json') as file:
             return json.load(file)
     except FileNotFoundError:
-        print('youtube_streams.json not found')
+        logger.error('youtube_streams.json not found')
