@@ -37,14 +37,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
 
-# Create a directory for logs and set permissions so the non-privileged user can write to it.
-RUN mkdir -p /app/logs && chown -R appuser:appuser /app/logs
-
-# Switch to the non-privileged user to run the application.
-USER appuser
+# Create a directory for logs.
+RUN mkdir -p /app/logs
 
 # Copy the source code into the container.
 COPY . .
+
+# Set ownership of the application files to the non-privileged user.
+RUN chown -R appuser:appuser /app/logs
+
+# Switch to the non-privileged user to run the application.
+USER appuser
 
 # Run the application.
 CMD python -Xfrozen_modules=off -m main
