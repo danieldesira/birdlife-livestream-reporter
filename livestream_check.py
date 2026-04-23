@@ -34,11 +34,11 @@ def validate_stream(youtube_url: str):
         stream = get_stream(youtube_url)
         last_frame_hash = get_frame_hash(get_current_frame(stream))
         differences = []
-        for i in range(0, 4):
+        for i in range(0, 2):
             frame_hash = get_frame_hash(get_current_frame(stream))
             differences.append(frame_hash - last_frame_hash)
             last_frame_hash = frame_hash
-        return any(x > 5 for x in differences)
+        return any(x > 0 for x in differences)
 
     except Exception as e:
         print(e)
