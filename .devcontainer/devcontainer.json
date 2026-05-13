@@ -1,8 +1,19 @@
 {
-  "name": "BirdlifeLivestream",
-  "customizations": {
-    "vscode": {
-      "extensions": ["ms-python.python", "ms-python.debugpy"]
-    }
-  }
+	"name": "BirdlifeLivestream",
+	"build": {
+		"context": "..",
+		"dockerfile": "../Dockerfile"
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/python:1": {
+			"installTools": true,
+			"version": "latest"
+		}
+	},
+	"forwardPorts": [5678],
+	"customizations": {
+		"vscode": {
+			"extensions": ["ms-python.python", "ms-python.debugpy"]
+		}
+	}
 }

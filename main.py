@@ -1,6 +1,5 @@
 from datetime import datetime
 import logging
-import os
 
 import dotenv
 
@@ -14,13 +13,6 @@ logging.basicConfig(
     )
 
 dotenv.load_dotenv()
-
-if os.getenv('DEBUG', 'False') == 'True':
-    import debugpy
-    debugpy.listen(5678)
-    print("Waiting for debugger to attach...")
-    #debugpy.wait_for_client()
-    print("Debugger attached...")
 
 report = generate_livestream_status_report()
 send_email(report)

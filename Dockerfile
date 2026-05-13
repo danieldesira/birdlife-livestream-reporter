@@ -16,6 +16,9 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
+# Enable debugging by default in dev
+ENV DEBUG=False
+
 WORKDIR /app
 
 # Create a non-privileged user that the app will run under.
@@ -25,7 +28,7 @@ RUN adduser \
     --disabled-password \
     --gecos "" \
     --home "/home/appuser" \
-    --shell "/sbin/nologin" \
+    --shell "/bin/bash" \
     --uid "${UID}" \
     appuser
 
