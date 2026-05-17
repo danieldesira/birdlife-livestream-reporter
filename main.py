@@ -5,6 +5,7 @@ import dotenv
 
 from email_report import send_email
 from livestream_check import generate_livestream_status_report
+import asyncio
 
 logging.basicConfig(
         level=logging.DEBUG,
@@ -14,5 +15,10 @@ logging.basicConfig(
 
 dotenv.load_dotenv()
 
-report = generate_livestream_status_report()
-send_email(report)
+async def main():
+    report = await generate_livestream_status_report()
+    send_email(report)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

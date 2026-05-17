@@ -1,3 +1,4 @@
+from asyncio import sleep
 import io
 import json
 import imagehash
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 def get_stream(youtube_url: str):
     sl = streamlink.Streamlink()
+    print(f"Getting stream for URL: {youtube_url}")
     streams = sl.streams(youtube_url)
     return streams['best']
 
@@ -28,21 +30,20 @@ def get_current_frame(stream: HLSStream):
     return frame
 
 
-def validate_stream(youtube_url: str):
+async def validate_stream(youtube_url: str):
     logger.info(f"Validating stream: {youtube_url}")
     try:
         stream = get_stream(youtube_url)
-        last_frame_hash = get_frame_hash(get_current_frame(stream))
-        differences = []
-        for i in range(0, 2):
-            frame_hash = get_frame_hash(get_current_frame(stream))
-            differences.append(frame_hash - last_frame_hash)
-            last_frame_hash = frame_hash
-        return any(x > 0 for x in differences)
-
+        print(stream.url)
+        frame_hash_1 = get_frame_hash(get_current_frame(stream))
+        await sleep(1)
+        frame_hash_2 = get_frame_hash(get_current_frame(stream))
+        print(f"Frame hash 1: {frame_hash_1}, Frame hash 2: {frame_hash_2}")
+        return frame_hash_1 != frame_hash_2
     except Exception as e:
-        print(e)
-        logger.error(f"Error validating stream {youtube_url}: {e}")
+        error_message = f"Error validating stream {youtube_url}: {e}"
+        print(error_message)
+        logger.error(error_message)
         return False
 
 
@@ -51,7 +52,7 @@ def get_frame_hash(frame: ndarray):
     return imagehash.phash(image)
 
 
-def generate_livestream_status_report():
+async def generate_livestream_status_report():
     report = []
     streams = load_youtube_streams()
     if streams:
@@ -60,7 +61,7 @@ def generate_livestream_status_report():
             logger.info(f"Checking stream: {stream.get('name')}")
             try:
                 youtube_url = get_long_url(stream.get('url')) or ''
-                if validate_stream(youtube_url):
+                if await validate_stream(youtube_url):
                     status = 'Online'
                 else:
                     status = 'Offline'
