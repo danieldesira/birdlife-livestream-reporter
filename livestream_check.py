@@ -3,10 +3,10 @@ import io
 import json
 import imagehash
 import imageio
-import streamlink
+from streamlink.session.session import Streamlink
 from PIL import Image
 from numpy import ndarray
-from streamlink.stream.hls import HLSStream
+from streamlink.stream.stream import Stream
 import logging
 
 from bitly_links import get_long_url
@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 def get_stream(youtube_url: str):
-    sl = streamlink.Streamlink()
+    sl = Streamlink()
     print(f"Getting stream for URL: {youtube_url}")
     streams = sl.streams(youtube_url)
     return streams['best']
 
 
-def get_current_frame(stream: HLSStream):
+def get_current_frame(stream: Stream):
     with stream.open() as fd:
         frame_bytes = fd.read(1024 * 1024)
 
