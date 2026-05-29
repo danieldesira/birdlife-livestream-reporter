@@ -35,8 +35,10 @@ async def validate_stream(youtube_url: str):
     try:
         stream = get_stream(youtube_url)
         frame_hash_1 = get_frame_hash(get_current_frame(stream))
-        await sleep(1)
+        logger.info(f"Frame 1 hash: {frame_hash_1}")
+        await sleep(5)
         frame_hash_2 = get_frame_hash(get_current_frame(stream))
+        logger.info(f"Frame 2 hash: {frame_hash_2}")
         return frame_hash_1 != frame_hash_2
     except Exception as e:
         error_message = f"Error validating stream {youtube_url}: {e}"
