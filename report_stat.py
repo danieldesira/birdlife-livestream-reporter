@@ -2,7 +2,7 @@ from typing import Literal
 
 
 class ReportStat:
-    def __init__(self, name: str, url: str, status: Literal['Online', 'Offline']):
+    def __init__(self, name: str, url: str, status: Literal['Online', 'Offline', 'Stalled']):
         self.__stream_name = name
         self.__stream_url = url
         self.__status = status

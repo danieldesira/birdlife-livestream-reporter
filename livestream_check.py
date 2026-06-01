@@ -1,6 +1,7 @@
 from asyncio import sleep
 import io
 import json
+from typing import Literal
 import imagehash
 import imageio
 from streamlink.session.session import Streamlink
@@ -30,7 +31,7 @@ def get_current_frame(stream: Stream):
     return frame
 
 
-async def validate_stream(youtube_url: str):
+async def validate_stream(youtube_url: str) -> Literal['Online', 'Offline', 'Stalled']:
     logger.info(f"Validating stream: {youtube_url}")
     try:
         stream = get_stream(youtube_url)
@@ -39,12 +40,17 @@ async def validate_stream(youtube_url: str):
         await sleep(5)
         frame_hash_2 = get_frame_hash(get_current_frame(stream))
         logger.info(f"Frame 2 hash: {frame_hash_2}")
-        return frame_hash_1 != frame_hash_2
+        if frame_hash_1 == frame_hash_2:
+            logger.warning(f"Stream {youtube_url} appears to be stalled.")
+            return 'Stalled'
+        else:
+            logger.info(f"Stream {youtube_url} is online.")
+            return 'Online'
     except Exception as e:
         error_message = f"Error validating stream {youtube_url}: {e}"
         print(error_message)
         logger.error(error_message)
-        return False
+        return 'Offline'
 
 
 def get_frame_hash(frame: ndarray):
@@ -62,10 +68,7 @@ async def generate_livestream_status_report():
             logger.info(message)
             try:
                 youtube_url = get_long_url(stream.get('url')) or ''
-                if await validate_stream(youtube_url):
-                    status = 'Online'
-                else:
-                    status = 'Offline'
+                status = await validate_stream(youtube_url)
                 report.append(ReportStat(stream.get('name'), stream.get('url'), status))
 
                 message = f"Stream status: {status}"
