@@ -3,7 +3,7 @@
 ## Setup
 
 Clone the following Git repository:
-`git clone https://github.com/danieldesira/birdlife-lifestream-reporter`
+`git clone https://github.com/danieldesira/birdlife-livestream-reporter`
 
 The following environment variables are required for email
 functionality to work:
