@@ -25,9 +25,9 @@ def generate_email_body(report_data: list):
     if any(filter(lambda stat: stat.status != 'Online', report_data)):
         total = len(report_data)
         online_count = len(list(filter(lambda stat: stat.status == 'Online', report_data)))
-        summary = f"{online_count}/{total} livestreams online..."
+        summary = f"{online_count}/{total} livestreams are online. Please check the report below for more details."
     else:
-        summary = 'All livestreams online!'
+        summary = 'All livestreams are online!'
     if template:
         return (template
                 .replace('<!--report-->', table_markup)
