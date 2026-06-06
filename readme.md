@@ -14,8 +14,14 @@ functionality to work:
 - `MAIL_PASSWORD`
 - `MAIL_RECIPIENTS`
 
-Run the script using:
-`py -m main`
+Install the dependencies as follows:
+
+1. Create virtual environment using: `py -m venv .venv`
+2. Activate virtual environment. (Windows: `.venv\Scripts\Activate`, MacOS/Linux: `source .venv/bin/activate`)
+3. Upgrade pip: `py -m pip install --upgrade pip`
+4. Install packages: `pip install -r requirements.txt`
+
+Run the script using: `py -m main`
 
 ## Use
 
