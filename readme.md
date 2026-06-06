@@ -14,8 +14,8 @@ functionality to work:
 - `MAIL_PASSWORD`
 - `MAIL_RECIPIENTS`
 
-Build the Docker image using:
-`docker compose up --build`
+Run the script using:
+`py -m main`
 
 ## Use
 
