@@ -40,6 +40,7 @@ async def validate_stream(youtube_url: str) -> Literal['Online', 'Offline', 'Sta
         await sleep(5)
         frame_hash_2 = get_frame_hash(get_current_frame(stream))
         logger.info(f"Frame 2 hash: {frame_hash_2}")
+        logger.info(f"Frame difference: {frame_hash_2 - frame_hash_1}")
         if frame_hash_1 == frame_hash_2:
             logger.warning(f"Stream {youtube_url} appears to be stalled.")
             return 'Stalled'
