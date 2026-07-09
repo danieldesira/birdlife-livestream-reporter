@@ -1,30 +1,37 @@
 [
   {
     "name": "Zurrieq Primary",
-    "url": "https://bit.ly/zpbtwc"
+    "url": "https://bit.ly/zpbtwc",
+    "alias": "zurrieq"
   },
   {
     "name": "San Anton",
-    "url": "https://bit.ly/sasbtwc"
+    "url": "https://bit.ly/sasbtwc",
+    "alias": "sananton"
   },
   {
     "name": "Salina Saltpans",
-    "url": "https://bit.ly/salinasaltpanswebcam"
+    "url": "https://bit.ly/salinasaltpanswebcam",
+    "alias": "salina"
   },
   {
     "name": "Stella Maris",
-    "url": "https://bit.ly/stellamariswebcam"
+    "url": "https://bit.ly/stellamariswebcam",
+    "alias": "stellamaris"
   },
   {
     "name": "Villa Messina",
-    "url": "https://bit.ly/villamessinabirdtable"
+    "url": "https://bit.ly/villamessinabirdtable",
+    "alias": "villamessina"
   },
   {
     "name": "Barn Swallows Nest",
-    "url": "https://bit.ly/blmswallowsnest"
+    "url": "https://bit.ly/blmswallowsnest",
+    "alias": "barnswallow"
   },
   {
     "name": "Common Swift Nest",
-    "url": "https://bit.ly/swift-nest-cam"
+    "url": "https://bit.ly/swift-nest-cam",
+    "alias": "commonswift"
   }
 ]
