@@ -1,6 +1,7 @@
 from asyncio import sleep
 import io
 import json
+import os
 from typing import Literal
 import imagehash
 import imageio
@@ -77,14 +78,16 @@ async def generate_livestream_status_report():
                 logger.info(message)
             except Exception as e:
                 logger.error(f"Error checking stream {stream.get('name')}: {e}")
+    else:
+        raise Exception("No streams found in youtube_streams.json")
     return report
 
 
 def load_youtube_streams():
-    try:
+    if not os.path.exists('youtube_streams.json'):
+        logger.error("youtube_streams.json file not found.")
+        print("youtube_streams.json file not found.")
+        return None
+    else:
         with open('youtube_streams.json') as file:
             return json.load(file)
-    except FileNotFoundError:
-        message = 'youtube_streams.json not found'
-        print(message)
-        logger.error(message)
