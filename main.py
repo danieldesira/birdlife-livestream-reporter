@@ -2,6 +2,7 @@ from datetime import datetime
 import logging
 
 import dotenv
+from fastapi import FastAPI
 
 from email_report import send_email
 from livestream_check import generate_livestream_status_report
@@ -15,10 +16,10 @@ logging.basicConfig(
 
 dotenv.load_dotenv()
 
-async def main():
+app = FastAPI()
+
+@app.get('/report')
+async def generate_report():
     report = await generate_livestream_status_report()
     send_email(report)
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+    return {"message": "Report generated and sent via email.", "html": report}
