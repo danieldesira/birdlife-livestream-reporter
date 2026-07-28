@@ -22,4 +22,7 @@ app = FastAPI()
 async def generate_report():
     report = await generate_livestream_status_report()
     send_email(report)
-    return {"message": "Report generated and sent via email.", "html": report}
+    return {
+        "message": "Report generated and sent via email.",
+        "data": [{ "name": stat.name, "url": stat.url, "status": stat.status } for stat in report]
+    }
