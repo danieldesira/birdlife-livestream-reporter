@@ -21,6 +21,9 @@ def get_stream(youtube_url: str):
     sl = Streamlink()
     print(f"Getting stream for URL: {youtube_url}")
     streams = sl.streams(youtube_url)
+    logger.info(f"Available streams for {youtube_url}: {list(streams.keys())}")
+    if not streams:
+        logger.warning(f"No streams extracted for {youtube_url} — likely blocked or extraction failure")
     return streams['best']
 
 
