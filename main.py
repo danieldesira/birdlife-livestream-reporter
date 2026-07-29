@@ -1,12 +1,11 @@
 from datetime import datetime
 import logging
 
-import dotenv
 from fastapi import FastAPI
+import dotenv
 
 from email_report import send_email
 from livestream_check import generate_livestream_status_report
-import asyncio
 
 logging.basicConfig(
         level=logging.DEBUG,
