@@ -30,6 +30,7 @@ def get_stream(youtube_url: str):
     cookie_jar = MozillaCookieJar('yt_cookies.txt')
     cookie_jar.load(ignore_discard=True, ignore_expires=True)
     sl.http.cookies.update(cookie_jar)
+    logger.info(cookie_jar)
 
     print(f"Getting stream for URL: {youtube_url}")
     streams = sl.streams(youtube_url)
