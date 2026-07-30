@@ -1,4 +1,5 @@
 from asyncio import sleep
+from http.cookiejar import MozillaCookieJar
 import io
 import json
 import os
@@ -19,6 +20,17 @@ logger = logging.getLogger(__name__)
 
 def get_stream(youtube_url: str):
     sl = Streamlink()
+
+    # Set custom headers and cookies for Streamlink to avoid being blocked by YouTube
+
+    sl.http.headers.update({
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+    })
+
+    cookie_jar = MozillaCookieJar('yt_cookies.txt')
+    cookie_jar.load(ignore_discard=True, ignore_expires=True)
+    sl.http.cookies.update(cookie_jar)
+
     print(f"Getting stream for URL: {youtube_url}")
     streams = sl.streams(youtube_url)
     logger.info(f"Available streams for {youtube_url}: {list(streams.keys())}")
