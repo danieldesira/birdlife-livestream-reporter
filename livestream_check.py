@@ -31,10 +31,7 @@ def get_api_stream_status(youtube_url: str):
         response = requests.get(f"https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails&id={live_id}&key={api_key}")
         status = response.json().get('items', [{}])[0].get('snippet', {}).get('liveBroadcastContent', 'Offline')
         logger.info(f"Stream status for {youtube_url}: {status}")
-        if status == 'live':
-            return 'Online'
-        else:
-            return 'Offline'
+        return status
     except Exception as e:
         logger.error(f"Error checking livestream status from Youtube API for {youtube_url}: {e}")
         return 'Offline'
@@ -65,7 +62,7 @@ async def validate_stream(youtube_url: str) -> Literal['Online', 'Offline', 'Sta
 
     logger.info(f"API status for {youtube_url}: {api_status}")
 
-    if api_status == 'Offline':
+    if api_status != 'live':
         return 'Offline'
     
     try:
