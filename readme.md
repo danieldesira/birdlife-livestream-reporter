@@ -14,6 +14,8 @@ functionality to work:
 - `MAIL_PASSWORD`
 - `MAIL_RECIPIENTS`
 
+Moreover, `YOUTUBE_API_KEY` is mandatory as it is part of the process.
+
 Install the dependencies as follows:
 
 1. Create virtual environment using: `py -m venv .venv`
@@ -43,11 +45,12 @@ To add or remove streams, please modify
 
 The livestream validation algorithm works as follows:
 
-1. We try to open the stream. `False` is returned immediately in case of failure.
-2. If it succeeds, we get 3 consecutive frames.
-3. We convert each frame to a hash.
-4. We compare the hashes and return `True` if any of the differences is over 0.
-5. Otherwise, we return `False`.
+1. We check the status from the Youtube API.
+2. If the stream is `live`, we try to open the stream. Otherwise we immediately return `Offline`.
+3. If it succeeds, we get 2 consecutive frames.
+4. We convert each frame to a hash.
+5. We compare the hashes and return `Stalled` if they are identical.
+6. Otherwise, we return `Online`.
 
 Libraries used:
 

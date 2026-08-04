@@ -6,6 +6,7 @@ import os
 from typing import Literal
 import imagehash
 import imageio
+import requests
 from streamlink.session.session import Streamlink
 from PIL import Image
 from numpy import ndarray
@@ -18,21 +19,29 @@ from report_stat import ReportStat
 logger = logging.getLogger(__name__)
 
 
+def get_youtube_live_id(youtube_url: str) -> str:
+    return youtube_url.split('/')[-1].split('?')[0]
+
+
+def get_api_stream_status(youtube_url: str):
+    live_id = get_youtube_live_id(youtube_url)
+    api_key = os.getenv('YOUTUBE_API_KEY')
+    logger.info(f"Checking livestream status from Youtube API. Video ID: {live_id}")
+    try:
+        response = requests.get(f"https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails&id={live_id}&key={api_key}")
+        status = response.json().get('items', [{}])[0].get('snippet', {}).get('liveBroadcastContent', 'Offline')
+        logger.info(f"Stream status for {youtube_url}: {status}")
+        if status == 'live':
+            return 'Online'
+        else:
+            return 'Offline'
+    except Exception as e:
+        logger.error(f"Error checking livestream status from Youtube API for {youtube_url}: {e}")
+        return 'Offline'
+
+
 def get_stream(youtube_url: str):
     sl = Streamlink()
-
-    # Set custom headers and cookies for Streamlink to avoid being blocked by YouTube
-
-    sl.http.headers.update({
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
-    })
-
-    sl.set_option('youtube-cookies', 'yt_cookies.txt')
-
-    # cookie_jar = MozillaCookieJar('yt_cookies.txt')
-    # cookie_jar.load(ignore_discard=True, ignore_expires=True)
-    # sl.http.cookies.update(cookie_jar)
-    # logger.info(cookie_jar)
 
     print(f"Getting stream for URL: {youtube_url}")
     streams = sl.streams(youtube_url)
@@ -52,6 +61,13 @@ def get_current_frame(stream: Stream):
 
 async def validate_stream(youtube_url: str) -> Literal['Online', 'Offline', 'Stalled']:
     logger.info(f"Validating stream: {youtube_url}")
+    api_status = get_api_stream_status(youtube_url)
+
+    logger.info(f"API status for {youtube_url}: {api_status}")
+
+    if api_status == 'Offline':
+        return 'Offline'
+    
     try:
         stream = get_stream(youtube_url)
         frame_hash_1 = get_frame_hash(get_current_frame(stream))
