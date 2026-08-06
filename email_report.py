@@ -3,20 +3,21 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import logging
+from typing import Literal
 
 logger = logging.getLogger(__name__)
 
-def load_email_template():
+def load_email_template(html_template: Literal['email_template.html', 'youtube_api_error.html']):
     try:
-        with open('email_template.html') as file:
+        with open(f'templates/{html_template}') as file:
             return file.read()
-    except FileNotFoundError:
-        print('email_template.html not found')
-        logger.error('email_template.html not found')
+    except FileNotFoundError as e:
+        print(f'{html_template} not found')
+        logger.error(f'{html_template} not found')
+        raise e
 
 
-def generate_email_body(report_data: list):
-    template = load_email_template()
+def generate_email_body(template: str, report_data: list):
     table_markup = ''.join(
         map(lambda
                 stat: f"<tr><td><div class=\"rounded {stat.status.lower()}\"></div></td><td><a href=\"{stat.url}\">{stat.name}</a></td><td><span class=\"{stat.status.lower()}-text\">{stat.status}</span></td></tr>",
@@ -36,7 +37,7 @@ def generate_email_body(report_data: list):
         return ""
 
 
-def send_email(report_data: list):
+def send_email(html_template: Literal['email_template.html', 'youtube_api_error.html'], report_data: list):
     try:
         if not os.getenv('MAIL_USERNAME') or not os.getenv('MAIL_PASSWORD') or not os.getenv('MAIL_RECIPIENTS') or not os.getenv('MAIL_HOST') or not os.getenv('MAIL_PORT'):
             print('Error: Missing email configuration')
@@ -52,7 +53,11 @@ def send_email(report_data: list):
             msg['From'] = mail_username
             msg['To'] = mail_recipients
             msg['Subject'] = 'Birdlife Youtube Livestream Report'
-            body = generate_email_body(report_data)
+            template = load_email_template(html_template)
+            if html_template == 'youtube_api_error.html':
+                body = template
+            else:
+                body = generate_email_body(template, report_data)
             msg.attach(MIMEText(body, 'html'))
             with smtplib.SMTP(mail_host, mail_port) as server:
                 server.starttls()

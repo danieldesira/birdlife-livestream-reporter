@@ -1,5 +1,4 @@
 from asyncio import sleep
-from http.cookiejar import MozillaCookieJar
 import io
 import json
 import os
@@ -15,6 +14,7 @@ import logging
 
 from bitly_links import get_long_url
 from report_stat import ReportStat
+from stream_checker.youtube_api_exception import YoutubeAPIException
 
 logger = logging.getLogger(__name__)
 
@@ -24,17 +24,21 @@ def get_youtube_live_id(youtube_url: str) -> str:
 
 
 def get_api_stream_status(youtube_url: str):
-    live_id = get_youtube_live_id(youtube_url)
-    api_key = os.getenv('YOUTUBE_API_KEY')
-    logger.info(f"Checking livestream status from Youtube API. Video ID: {live_id}")
     try:
+        live_id = get_youtube_live_id(youtube_url)
+        api_key = os.getenv('YOUTUBE_API_KEY')
+        logger.info(f"Checking livestream status from Youtube API. Video ID: {live_id}")
         response = requests.get(f"https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails&id={live_id}&key={api_key}")
-        status = response.json().get('items', [{}])[0].get('snippet', {}).get('liveBroadcastContent', 'Offline')
+        status = response.json().get('items', [{}])[0].get('snippet', {}).get('liveBroadcastContent')
+        if response.status_code != 200:
+            error_message = f"Error checking livestream status from Youtube API for {youtube_url}: {response.status_code} - {response.text}"
+            logger.error(error_message)
+            raise YoutubeAPIException(error_message)
         logger.info(f"Stream status for {youtube_url}: {status}")
         return status
     except Exception as e:
-        logger.error(f"Error checking livestream status from Youtube API for {youtube_url}: {e}")
-        return 'Offline'
+        error_message = f"Error checking livestream status from Youtube API for {youtube_url}: {e}"
+        logger.error(error_message)
 
 
 def get_stream(youtube_url: str):
@@ -58,7 +62,11 @@ def get_current_frame(stream: Stream):
 
 async def validate_stream(youtube_url: str) -> Literal['Online', 'Offline', 'Stalled']:
     logger.info(f"Validating stream: {youtube_url}")
-    api_status = get_api_stream_status(youtube_url)
+    try:
+        api_status = get_api_stream_status(youtube_url)
+    except YoutubeAPIException as e:
+        logger.error(f"Error checking API status for {youtube_url}: {e}")
+        raise e
 
     logger.info(f"API status for {youtube_url}: {api_status}")
 
@@ -107,6 +115,9 @@ async def generate_livestream_status_report():
                 message = f"Stream status: {status}"
                 print(message)
                 logger.info(message)
+            except YoutubeAPIException as e:
+                logger.error(f"Error checking stream {stream.get('name')}: {e} \nPlease check the YouTube API key and ensure it is valid.")
+                raise e
             except Exception as e:
                 logger.error(f"Error checking stream {stream.get('name')}: {e}")
     else:
