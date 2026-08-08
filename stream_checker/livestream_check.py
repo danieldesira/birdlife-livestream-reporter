@@ -10,13 +10,13 @@ from streamlink.session.session import Streamlink
 from PIL import Image
 from numpy import ndarray
 from streamlink.stream.stream import Stream
-import logging
 
 from bitly_links import get_long_url
+from custom_logger import setup_logger
 from report_stat import ReportStat
 from stream_checker.youtube_api_exception import YoutubeAPIException
 
-logger = logging.getLogger(__name__)
+logger = setup_logger()
 
 
 def get_youtube_live_id(youtube_url: str) -> str:
@@ -31,20 +31,17 @@ def get_api_stream_status(youtube_url: str):
         response = requests.get(f"https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails&id={live_id}&key={api_key}")
         status = response.json().get('items', [{}])[0].get('snippet', {}).get('liveBroadcastContent')
         if response.status_code != 200:
-            error_message = f"Error checking livestream status from Youtube API for {youtube_url}: {response.status_code} - {response.text}"
-            logger.error(error_message)
-            raise YoutubeAPIException(error_message)
+            raise YoutubeAPIException(f"Error checking livestream status from Youtube API for {youtube_url}: {response.status_code} - {response.text}")
         logger.info(f"Stream status for {youtube_url}: {status}")
         return status
     except Exception as e:
-        error_message = f"Error checking livestream status from Youtube API for {youtube_url}: {e}"
-        logger.error(error_message)
+        logger.error(f"Error checking livestream status from Youtube API for {youtube_url}: {e}")
 
 
 def get_stream(youtube_url: str):
     sl = Streamlink()
 
-    print(f"Getting stream for URL: {youtube_url}")
+    logger.info(f"Getting stream for URL: {youtube_url}")
     streams = sl.streams(youtube_url)
     logger.info(f"Available streams for {youtube_url}: {list(streams.keys())}")
     if not streams:
@@ -88,9 +85,7 @@ async def validate_stream(youtube_url: str) -> Literal['Online', 'Offline', 'Sta
             logger.info(f"Stream {youtube_url} is online.")
             return 'Online'
     except Exception as e:
-        error_message = f"Error validating stream {youtube_url}: {e}"
-        print(error_message)
-        logger.error(error_message)
+        logger.error(f"Error validating stream {youtube_url}: {e}")
         return 'Offline'
 
 
@@ -104,17 +99,13 @@ async def generate_livestream_status_report():
     streams = load_youtube_streams()
     if streams:
         for stream in streams:
-            message = f"Checking stream: {stream.get('name')}"
-            print(message)
-            logger.info(message)
+            logger.info(f"Checking stream: {stream.get('name')}")
             try:
                 youtube_url = get_long_url(stream.get('url')) or ''
                 status = await validate_stream(youtube_url)
                 report.append(ReportStat(stream.get('name'), stream.get('url'), status))
 
-                message = f"Stream status: {status}"
-                print(message)
-                logger.info(message)
+                logger.info(f"Stream status: {status}")
             except YoutubeAPIException as e:
                 logger.error(f"Error checking stream {stream.get('name')}: {e} \nPlease check the YouTube API key and ensure it is valid.")
                 raise e
@@ -128,7 +119,6 @@ async def generate_livestream_status_report():
 def load_youtube_streams():
     if not os.path.exists('youtube_streams.json'):
         logger.error("youtube_streams.json file not found.")
-        print("youtube_streams.json file not found.")
         return None
     else:
         with open('youtube_streams.json') as file:

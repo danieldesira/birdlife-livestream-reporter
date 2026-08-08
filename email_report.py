@@ -2,17 +2,17 @@ import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import logging
 from typing import Literal
 
-logger = logging.getLogger(__name__)
+from custom_logger import setup_logger
+
+logger = setup_logger()
 
 def load_email_template(html_template: Literal['email_template.html', 'youtube_api_error.html']):
     try:
         with open(f'templates/{html_template}') as file:
             return file.read()
     except FileNotFoundError as e:
-        print(f'{html_template} not found')
         logger.error(f'{html_template} not found')
         raise e
 
@@ -40,7 +40,6 @@ def generate_email_body(template: str, report_data: list):
 def send_email(html_template: Literal['email_template.html', 'youtube_api_error.html'], report_data: list):
     try:
         if not os.getenv('MAIL_USERNAME') or not os.getenv('MAIL_PASSWORD') or not os.getenv('MAIL_RECIPIENTS') or not os.getenv('MAIL_HOST') or not os.getenv('MAIL_PORT'):
-            print('Error: Missing email configuration')
             logger.error('Error: Missing email configuration')
         else:
             mail_username = os.getenv('MAIL_USERNAME') or ''
@@ -65,5 +64,4 @@ def send_email(html_template: Literal['email_template.html', 'youtube_api_error.
                 server.send_message(msg)
             logger.info('Email sent successfully')
     except smtplib.SMTPException as e:
-        print('Error: unable to send email', e)
         logger.error(f"Error sending email: {e}")
