@@ -1,6 +1,7 @@
 from asyncio import sleep
 import io
 import json
+import logging
 import os
 from typing import Literal
 import imagehash
@@ -12,11 +13,10 @@ from numpy import ndarray
 from streamlink.stream.stream import Stream
 
 from bitly_links import get_long_url
-from custom_logger import setup_logger
 from report_stat import ReportStat
 from stream_checker.youtube_api_exception import YoutubeAPIException
 
-logger = setup_logger()
+logger = logging.getLogger(__name__)
 
 
 def get_youtube_live_id(youtube_url: str) -> str:

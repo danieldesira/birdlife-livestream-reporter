@@ -1,12 +1,12 @@
+import logging
 import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from typing import Literal
 
-from custom_logger import setup_logger
+logger = logging.getLogger(__name__)
 
-logger = setup_logger()
 
 def load_email_template(html_template: Literal['email_template.html', 'youtube_api_error.html']):
     try:

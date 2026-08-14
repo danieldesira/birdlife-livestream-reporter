@@ -4,18 +4,20 @@ import logging
 import asyncio
 import dotenv
 
-from custom_logger import setup_logger
 from email_report import send_email
 from stream_checker.livestream_check import generate_livestream_status_report
 from stream_checker.youtube_api_exception import YoutubeAPIException
 
-# logging.basicConfig(
-#         level=logging.DEBUG,
-#         format='%(asctime)s - %(levelname)s - %(message)s',
-#         filename=f"logs/{datetime.now().strftime('%Y-%m-%d')}.log",
-#     )
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler(f"logs/{datetime.now().strftime('%Y-%m-%d')}.log"),
+        logging.StreamHandler()
+    ]
+)
 
-logger = setup_logger()
+logger = logging.getLogger(__name__)
 
 dotenv.load_dotenv()
 
