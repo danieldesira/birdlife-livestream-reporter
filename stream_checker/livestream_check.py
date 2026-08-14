@@ -29,7 +29,14 @@ def get_api_stream_status(youtube_url: str):
         api_key = os.getenv('YOUTUBE_API_KEY')
         logger.info(f"Checking livestream status from Youtube API. Video ID: {live_id}")
         response = requests.get(f"https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails&id={live_id}&key={api_key}")
-        status = response.json().get('items', [{}])[0].get('snippet', {}).get('liveBroadcastContent')
+        response_data = response.json()
+        items = response_data.get('items')
+        if not items:
+            return ''
+        snippet = items[0].get('snippet')
+        if not snippet:
+            return ''
+        status = snippet.get('liveBroadcastContent', '')
         if response.status_code != 200:
             raise YoutubeAPIException(f"Error checking livestream status from Youtube API for {youtube_url}: {response.status_code} - {response.text}")
         logger.info(f"Stream status for {youtube_url}: {status}")
